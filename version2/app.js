@@ -97,6 +97,7 @@ const chatThread = document.querySelector("#chat-thread");
 const composerLabel = document.querySelector("#composer-label");
 const composerInput = document.querySelector("#composer-input");
 const scenarioTitle = document.querySelector("#scenario-title");
+const chatName = document.querySelector("#chat-name");
 const intentPills = document.querySelector("#intent-pills");
 const contextList = document.querySelector("#context-list");
 const signalGrid = document.querySelector("#signal-grid");
@@ -108,6 +109,14 @@ const autoplayButton = document.querySelector("#autoplay-button");
 const enableContextButton = document.querySelector("#enable-context-button");
 const skipContextButton = document.querySelector("#skip-context-button");
 const groupPicker = document.querySelector("#group-picker");
+const headerLeft = document.querySelector(".header-left");
+const chatStatus = document.querySelector("#chat-status");
+const contactOverlay = document.querySelector("#contact-overlay");
+const groupOverlay = document.querySelector("#group-overlay");
+const homeOverlay = document.querySelector("#home-overlay");
+const contactOverlayBack = document.querySelector("#contact-overlay-back");
+const groupOverlayBack = document.querySelector("#group-overlay-back");
+const openGroupSelectorButton = document.querySelector("#open-group-selector");
 
 const toggleHistory = document.querySelector("#toggle-history");
 const toggleAdvisor = document.querySelector("#toggle-advisor");
@@ -531,21 +540,9 @@ function wireGroupChip(chip) {
   chip.addEventListener("click", () => {
     const groupId = chip.dataset.groupId;
     if (groupId === "custom") {
-      const customName = window.prompt("输入你想开放给小Q参考的群聊名称");
-      if (!customName || !customName.trim()) {
-        return;
-      }
-
-      state.customGroupCount += 1;
-      const newChip = document.createElement("button");
-      newChip.className = "group-chip active";
-      newChip.dataset.groupId = `custom-${state.customGroupCount}`;
-      newChip.textContent = customName.trim();
-      chip.parentElement.insertBefore(newChip, chip);
-      wireGroupChip(newChip);
-      state.selectedGroups.push(newChip.dataset.groupId);
-      toggleGroup.checked = true;
-      syncConsentUi();
+      contactOverlay.hidden = false;
+      groupOverlay.hidden = true;
+      document.body.style.overflow = "hidden";
       return;
     }
 
@@ -564,6 +561,75 @@ function wireGroupChip(chip) {
 
 document.querySelectorAll(".group-chip").forEach((chip) => {
   wireGroupChip(chip);
+});
+
+function closeSelectorOverlays() {
+  contactOverlay.hidden = true;
+  groupOverlay.hidden = true;
+  document.body.style.overflow = "";
+}
+
+function openHomeOverlay() {
+  homeOverlay.hidden = false;
+  contactOverlay.hidden = true;
+  groupOverlay.hidden = true;
+  document.body.style.overflow = "hidden";
+}
+
+function closeHomeOverlay() {
+  homeOverlay.hidden = true;
+  document.body.style.overflow = "";
+}
+
+contactOverlayBack.addEventListener("click", closeSelectorOverlays);
+groupOverlayBack.addEventListener("click", () => {
+  groupOverlay.hidden = true;
+  contactOverlay.hidden = false;
+});
+
+openGroupSelectorButton.addEventListener("click", () => {
+  contactOverlay.hidden = true;
+  groupOverlay.hidden = false;
+});
+
+document.querySelectorAll(".selector-group-row").forEach((row) => {
+  row.addEventListener("click", () => {
+    const groupName = row.dataset.groupName;
+    let matchingChip = Array.from(document.querySelectorAll(".group-chip")).find(
+      (chip) => chip.textContent.trim() === groupName
+    );
+
+    if (!matchingChip) {
+      state.customGroupCount += 1;
+      matchingChip = document.createElement("button");
+      matchingChip.className = "group-chip active";
+      matchingChip.dataset.groupId = `custom-${state.customGroupCount}`;
+      matchingChip.textContent = groupName;
+      const customChip = document.querySelector('.group-chip[data-group-id="custom"]');
+      customChip.parentElement.insertBefore(matchingChip, customChip);
+      wireGroupChip(matchingChip);
+    } else {
+      matchingChip.classList.add("active");
+    }
+
+    if (!state.selectedGroups.includes(matchingChip.dataset.groupId)) {
+      state.selectedGroups.push(matchingChip.dataset.groupId);
+    }
+
+    toggleGroup.checked = true;
+    syncConsentUi();
+    closeSelectorOverlays();
+  });
+});
+
+headerLeft.addEventListener("click", openHomeOverlay);
+
+document.querySelectorAll(".home-conversation-row").forEach((row) => {
+  row.addEventListener("click", () => {
+    chatName.textContent = row.dataset.chatName;
+    chatStatus.textContent = row.dataset.chatStatus;
+    closeHomeOverlay();
+  });
 });
 
 sendButton.addEventListener("click", requestLiveResponse);

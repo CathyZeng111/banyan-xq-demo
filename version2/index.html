@@ -67,7 +67,13 @@
                     <button class="group-chip" data-group-id="g1">Wang lab(无导师版）</button>
                     <button class="group-chip" data-group-id="g2">王老师课题组群</button>
                     <button class="group-chip" data-group-id="g3">王老师</button>
-                    <button class="group-chip group-chip-custom" data-group-id="custom">自由选择群聊</button>
+                    <button class="group-chip group-chip-custom" data-group-id="custom" aria-label="自由选择群聊">
+                      <svg class="group-plus-svg" viewBox="0 0 24 24" aria-hidden="true">
+                        <circle cx="12" cy="12" r="11"></circle>
+                        <path d="M12 6.5v11"></path>
+                        <path d="M6.5 12h11"></path>
+                      </svg>
+                    </button>
                   </div>
                 </div>
               </section>
@@ -128,6 +134,221 @@
                 </button>
               </div>
             </footer>
+
+            <section id="contact-overlay" class="selector-overlay" hidden>
+              <div class="selector-page">
+                <header class="selector-header">
+                  <button id="contact-overlay-back" class="selector-back" aria-label="返回">‹</button>
+                  <h2 class="selector-title">选择联系人</h2>
+                  <div class="selector-header-spacer"></div>
+                </header>
+
+                <div class="selector-search-bar">
+                  <span class="selector-search-icon">⌕</span>
+                  <span>搜索</span>
+                </div>
+
+                <button id="open-group-selector" class="selector-entry">
+                  <span>从群聊中选择</span>
+                  <span class="selector-arrow">›</span>
+                </button>
+
+                <section class="selector-section">
+                  <div class="selector-section-title">相关好友</div>
+                  <div class="selector-contact-row">
+                    <span class="selector-radio"></span>
+                    <span class="selector-avatar selector-avatar-muted">S</span>
+                    <span class="selector-contact-name">S</span>
+                  </div>
+                  <div class="selector-contact-row">
+                    <span class="selector-radio"></span>
+                    <span class="selector-avatar selector-avatar-hat"></span>
+                    <span class="selector-contact-name">农学1903张新凯</span>
+                  </div>
+                  <div class="selector-contact-row">
+                    <span class="selector-radio"></span>
+                    <span class="selector-avatar selector-avatar-blue"></span>
+                    <span class="selector-contact-name">黄新</span>
+                  </div>
+                  <div class="selector-contact-row">
+                    <span class="selector-radio"></span>
+                    <span class="selector-avatar selector-avatar-fox"></span>
+                    <span class="selector-contact-name">植生1908葛行宇</span>
+                  </div>
+                  <div class="selector-contact-row">
+                    <span class="selector-radio"></span>
+                    <span class="selector-avatar selector-avatar-muted"></span>
+                    <span class="selector-contact-name">植生1905朱涵晓</span>
+                  </div>
+                </section>
+
+                <section class="selector-section selector-section-recent">
+                  <div class="selector-section-title">最近联系人</div>
+                  <div class="selector-contact-row">
+                    <span class="selector-radio selector-radio-active"></span>
+                    <span class="selector-avatar selector-avatar-bot">伴</span>
+                    <span class="selector-contact-name">伴研小Q</span>
+                  </div>
+                  <div class="selector-contact-row">
+                    <span class="selector-radio"></span>
+                    <span class="selector-avatar selector-avatar-water"></span>
+                    <span class="selector-contact-name">李纵擎</span>
+                  </div>
+                </section>
+
+                <button class="selector-submit" disabled>立即创建</button>
+              </div>
+            </section>
+
+            <section id="group-overlay" class="selector-overlay" hidden>
+              <div class="selector-page">
+                <header class="selector-header">
+                  <button id="group-overlay-back" class="selector-back" aria-label="返回">‹</button>
+                  <h2 class="selector-title">选择群聊</h2>
+                  <div class="selector-header-spacer"></div>
+                </header>
+
+                <div class="selector-search-bar">
+                  <span class="selector-search-icon">⌕</span>
+                  <span>搜索</span>
+                </div>
+
+                <section class="selector-section selector-group-list">
+                  <button class="selector-group-row" data-group-name="实验仪器答疑群">
+                    <span class="selector-group-avatar avatar-lab">仪</span>
+                    <span class="selector-group-name">实验仪器答疑群</span>
+                    <span class="selector-arrow">›</span>
+                  </button>
+                  <button class="selector-group-row" data-group-name="综合实验楼A栋大群">
+                    <span class="selector-group-avatar avatar-build">综</span>
+                    <span class="selector-group-name">综合实验楼A栋大群</span>
+                    <span class="selector-arrow">›</span>
+                  </button>
+                  <button class="selector-group-row" data-group-name="2305生科班级群">
+                    <span class="selector-group-avatar avatar-class">班</span>
+                    <span class="selector-group-name">2305生科班级群</span>
+                    <span class="selector-arrow">›</span>
+                  </button>
+                  <button class="selector-group-row" data-group-name="话剧社团">
+                    <span class="selector-group-avatar avatar-drama">话</span>
+                    <span class="selector-group-name">话剧社团</span>
+                    <span class="selector-arrow">›</span>
+                  </button>
+                  <button class="selector-group-row" data-group-name="生科第五党支部">
+                    <span class="selector-group-avatar avatar-party">党</span>
+                    <span class="selector-group-name">生科第五党支部</span>
+                    <span class="selector-arrow">›</span>
+                  </button>
+                </section>
+
+                <button class="selector-submit" disabled>立即创建</button>
+              </div>
+            </section>
+
+            <section id="home-overlay" class="selector-overlay home-overlay" hidden>
+              <div class="home-page">
+                <div class="home-status-bar">
+                  <div class="status-left">
+                    <span class="status-time">10:57</span>
+                    <span class="status-dot"></span>
+                  </div>
+                  <div class="status-right">
+                    <span>5G</span>
+                    <span>▮▮▮▮</span>
+                    <span>100</span>
+                  </div>
+                </div>
+
+                <header class="home-header">
+                  <div class="home-profile">
+                    <div class="home-avatar">碎</div>
+                    <div class="home-profile-copy">
+                      <h2>碎花同学</h2>
+                      <div class="home-presence">
+                        <span class="online-dot"></span>
+                        <span>在线 - 5G</span>
+                        <span class="home-presence-arrow">›</span>
+                      </div>
+                    </div>
+                  </div>
+                  <button class="home-add-button" aria-label="新增">＋</button>
+                </header>
+
+                <div class="home-search">搜索</div>
+
+                <main class="home-conversation-list">
+                  <button class="home-conversation-row" data-chat-name="伴研小Q" data-chat-status="在线 · WiFi">
+                    <div class="home-conversation-avatar convo-bot">伴</div>
+                    <div class="home-conversation-main">
+                      <div class="home-conversation-top">
+                        <strong>伴研小Q</strong>
+                        <span>昨天 16:57</span>
+                      </div>
+                      <p>你好</p>
+                    </div>
+                  </button>
+
+                  <button class="home-conversation-row" data-chat-name="王老师" data-chat-status="在线 · WiFi">
+                    <div class="home-conversation-avatar convo-teacher">王</div>
+                    <div class="home-conversation-main">
+                      <div class="home-conversation-top">
+                        <strong>王老师</strong>
+                        <span>10:21</span>
+                      </div>
+                      <p>下午把修改后的提纲发我。</p>
+                    </div>
+                  </button>
+
+                  <button class="home-conversation-row" data-chat-name="王老师课题组群" data-chat-status="群聊">
+                    <div class="home-conversation-avatar convo-group-a">组</div>
+                    <div class="home-conversation-main">
+                      <div class="home-conversation-top">
+                        <strong>王老师课题组群</strong>
+                        <span>昨天 21:16</span>
+                      </div>
+                      <p>李师姐：BCA 试剂盒在二楼 -20 度冰箱第三层右侧。</p>
+                    </div>
+                  </button>
+
+                  <button class="home-conversation-row" data-chat-name="Wang lab(无导师版）" data-chat-status="群聊">
+                    <div class="home-conversation-avatar convo-group-b">W</div>
+                    <div class="home-conversation-main">
+                      <div class="home-conversation-top">
+                        <strong>Wang lab(无导师版）</strong>
+                        <span>昨天 19:42</span>
+                      </div>
+                      <p>张师兄：明天组会每个人汇报 5 分钟。</p>
+                    </div>
+                  </button>
+
+                  <button class="home-conversation-row" data-chat-name="实验仪器答疑群" data-chat-status="群聊">
+                    <div class="home-conversation-avatar convo-group-c">仪</div>
+                    <div class="home-conversation-main">
+                      <div class="home-conversation-top">
+                        <strong>实验仪器答疑群</strong>
+                        <span>周一</span>
+                      </div>
+                      <p>王师兄：离心机 Error 404 先检查转子是否锁紧。</p>
+                    </div>
+                  </button>
+                </main>
+
+                <nav class="home-bottom-nav">
+                  <button class="home-nav-item active">
+                    <span class="home-nav-icon">💬</span>
+                    <span>消息</span>
+                  </button>
+                  <button class="home-nav-item">
+                    <span class="home-nav-icon">👤</span>
+                    <span>联系人</span>
+                  </button>
+                  <button class="home-nav-item">
+                    <span class="home-nav-icon">◔</span>
+                    <span>动态</span>
+                  </button>
+                </nav>
+              </div>
+            </section>
           </div>
         </div>
 
