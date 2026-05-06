@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: banyan-xq-demo
+    runtime: node
+    rootDir: version4
+    plan: free
+    startCommand: node server.js
+    envVars:
+      - key: HOST
+        value: 0.0.0.0
+      - key: OPENAI_BASE_URL
+        value: https://api.deepseek.com
+      - key: OPENAI_MODEL
+        value: deepseek-v4-flash
+      - key: OPENAI_API_KEY
+        sync: false

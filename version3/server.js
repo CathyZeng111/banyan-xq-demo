@@ -135,22 +135,96 @@ function readBody(req) {
   });
 }
 
-function buildContext({ scenarioId, toggles, history }) {
+function formatAuthorizedMessages(prefix, messages) {
+  if (!Array.isArray(messages) || messages.length === 0) {
+    return [];
+  }
+
+  return [
+    `${prefix}：` +
+      messages
+        .map((item) => {
+          const roleLabel = item.role === "user" ? "用户" : "对方";
+          const meta = typeof item.meta === "string" && item.meta.trim() ? `（${item.meta}）` : "";
+          return `${roleLabel}${meta}：${item.text}`;
+        })
+        .join(" | "),
+  ];
+}
+
+function buildProfileContextLines(profileContext) {
+  if (!profileContext || typeof profileContext !== "object") {
+    return [];
+  }
+
+  const lines = [];
+  if (profileContext.studentIdentity || profileContext.discipline || profileContext.mbti) {
+    lines.push(
+      `研究生个人档案：${[
+        profileContext.studentIdentity,
+        profileContext.discipline,
+        profileContext.mbti && `MBTI ${profileContext.mbti}`,
+      ]
+        .filter(Boolean)
+        .join("，")}`
+    );
+  }
+  if (Array.isArray(profileContext.painPoints) && profileContext.painPoints.length) {
+    lines.push(`核心沟通困扰：${profileContext.painPoints.join("、")}`);
+  }
+  if (profileContext.advisorTitle || profileContext.advisorStyle) {
+    lines.push(
+      `导师画像：${[
+        profileContext.advisorTitle && `日常称呼 ${profileContext.advisorTitle}`,
+        profileContext.advisorStyle && `风格 ${profileContext.advisorStyle}`,
+      ]
+        .filter(Boolean)
+        .join("，")}`
+    );
+  }
+  if (Array.isArray(profileContext.advisorFocuses) && profileContext.advisorFocuses.length) {
+    lines.push(`导师关注点：${profileContext.advisorFocuses.join("、")}`);
+  }
+  if (Array.isArray(profileContext.advisorTaboos) && profileContext.advisorTaboos.length) {
+    lines.push(`导师雷区：${profileContext.advisorTaboos.join("、")}`);
+  }
+  if (typeof profileContext.communicationModel === "string" && profileContext.communicationModel.trim()) {
+    lines.push(`专属沟通模型：${profileContext.communicationModel.trim()}`);
+  }
+  return lines;
+}
+
+function buildContext({ scenarioId, toggles, history, authorizedContext, profileContext }) {
   const scenario = scenarioContexts[scenarioId];
   const contextLines = [scenario.summary];
+  const advisorMessages = authorizedContext?.advisorMessages;
+  const groupMessages = Array.isArray(authorizedContext?.groupMessages) ? authorizedContext.groupMessages : [];
+  contextLines.push(...buildProfileContextLines(profileContext));
 
   if (scenarioId === "emotional-support") {
     if (toggles.history) {
       contextLines.push(scenario.context[0]);
     }
     if (toggles.advisor) {
-      contextLines.push(scenario.context[1]);
+      const advisorLines = formatAuthorizedMessages("已授权导师沟通记录", advisorMessages);
+      contextLines.push(...(advisorLines.length ? advisorLines : [scenario.context[1]]));
     }
     if (toggles.group) {
-      contextLines.push(scenario.context[2]);
+      const groupLines = groupMessages.flatMap((group) =>
+        formatAuthorizedMessages(`已授权群聊记录（${group.name}）`, group.messages)
+      );
+      contextLines.push(...(groupLines.length ? groupLines : [scenario.context[2]]));
     }
   } else {
     contextLines.push(...scenario.context);
+    if (toggles.advisor) {
+      contextLines.push(...formatAuthorizedMessages("已授权导师沟通记录", advisorMessages));
+    }
+    if (toggles.group) {
+      groupMessages.forEach((group) => {
+        contextLines.push(...formatAuthorizedMessages(`已授权群聊记录（${group.name}）`, group.messages));
+      });
+    }
   }
 
   if (history.length) {
@@ -189,8 +263,8 @@ function buildInstructions({ scenarioId, toggles }) {
   return shared.join("\n");
 }
 
-function buildUserPrompt({ scenarioId, userInput, toggles, history }) {
-  const contextLines = buildContext({ scenarioId, toggles, history });
+function buildUserPrompt({ scenarioId, userInput, toggles, history, authorizedContext }) {
+  const contextLines = buildContext({ scenarioId, toggles, history, authorizedContext });
   return [
     `场景 ID：${scenarioId}`,
     `用户输入：${userInput}`,
