@@ -1,0 +1,13 @@
+{
+  "name": "banyan-xq-demo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "伴研小Q demo for public deployment",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

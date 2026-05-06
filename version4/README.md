@@ -53,6 +53,38 @@ node server.js
 
 当前版本已经整理成适合部署到 Render 的结构，推荐直接发布 `version4/`。
 
+### 方式零：Vercel（现在也已支持）
+
+当前 `version4/` 已经补好了 Vercel 所需结构：
+
+- 静态页面：`index.html`、`styles.css`、`app.js`
+- Serverless Functions：`api/generate.js`、`api/health.js`
+- 配置文件：`vercel.json`
+
+部署步骤：
+
+1. 把项目上传到 GitHub
+2. 登录 Vercel
+3. 点击 `Add New...` -> `Project`
+4. 导入你的 GitHub 仓库
+5. 在项目设置里把 `Root Directory` 设为 `version4`
+6. 添加环境变量：
+
+```text
+OPENAI_API_KEY=你的key
+OPENAI_BASE_URL=https://api.deepseek.com
+OPENAI_MODEL=deepseek-v4-flash
+```
+
+7. 点击 `Deploy`
+
+部署完成后，Vercel 会给你一个公网 URL，直接就能访问。
+
+注意：
+
+- Vercel 不会直接运行你本地的 `server.js` 常驻服务，所以我已经把线上接口改成了 `api/` 下的 serverless function
+- 本地开发仍然可以继续用 `node server.js`
+
 ### 方式一：Render（推荐）
 
 1. 把整个项目上传到 GitHub

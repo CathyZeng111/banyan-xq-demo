@@ -46,13 +46,6 @@
             <main id="chat-thread" class="chat-thread" aria-live="polite"></main>
 
             <footer class="input-dock">
-              <section class="home-shortcuts">
-                <button class="shortcut-chip" data-home-action="repair-message">帮我改一段给导师的话</button>
-                <button class="shortcut-chip" data-home-action="advisor-translate">导师这句话什么意思？</button>
-                <button class="shortcut-chip" data-home-action="lab-rag">问问实验室资料</button>
-                <button class="shortcut-chip" data-home-action="emotional-support">我现在有点撑不住了</button>
-              </section>
-
               <section class="consent-card">
                 <p class="consent-copy">
                   你可以选择是否授权小Q参考你与导师的历史沟通摘要、已加入的课题组群资料。与小Q的对话会自动保存在记忆中。授权后，小Q能更准确理解你的压力来源。
@@ -80,12 +73,19 @@
 
               <div class="input-row">
                 <div class="draft-box">
-                  <p class="draft-hint" id="composer-label">当前演示输入</p>
                   <textarea
                     id="composer-input"
                     class="draft-input"
                     spellcheck="false"
-                    placeholder="在这里输入你想让伴研小Q处理的内容"
+                    placeholder="帮我改一段给导师的话&#10;导师这句话什么意思？&#10;问问实验室资料&#10;我现在有点撑不住了"
+                  ></textarea>
+                </div>
+                <div id="plain-composer" class="plain-composer" hidden>
+                  <textarea
+                    id="plain-composer-input"
+                    class="plain-composer-input"
+                    spellcheck="false"
+                    placeholder="输入消息"
                   ></textarea>
                 </div>
                 <button class="send-button" id="replay-button">发送</button>
@@ -277,7 +277,7 @@
                 <div class="home-search">搜索</div>
 
                 <main class="home-conversation-list">
-                  <button class="home-conversation-row" data-chat-name="伴研小Q" data-chat-status="在线 · WiFi">
+                  <button class="home-conversation-row" data-chat-id="companion" data-chat-name="伴研小Q" data-chat-status="在线 · WiFi">
                     <div class="home-conversation-avatar convo-bot">伴</div>
                     <div class="home-conversation-main">
                       <div class="home-conversation-top">
@@ -288,7 +288,7 @@
                     </div>
                   </button>
 
-                  <button class="home-conversation-row" data-chat-name="王老师" data-chat-status="在线 · WiFi">
+                  <button class="home-conversation-row" data-chat-id="advisor" data-chat-name="王老师" data-chat-status="在线 · WiFi">
                     <div class="home-conversation-avatar convo-teacher">王</div>
                     <div class="home-conversation-main">
                       <div class="home-conversation-top">
@@ -299,7 +299,7 @@
                     </div>
                   </button>
 
-                  <button class="home-conversation-row" data-chat-name="王老师课题组群" data-chat-status="群聊">
+                  <button class="home-conversation-row" data-chat-id="advisor-group" data-chat-name="王老师课题组群" data-chat-status="群聊">
                     <div class="home-conversation-avatar convo-group-a">组</div>
                     <div class="home-conversation-main">
                       <div class="home-conversation-top">
@@ -310,7 +310,7 @@
                     </div>
                   </button>
 
-                  <button class="home-conversation-row" data-chat-name="Wang lab(无导师版）" data-chat-status="群聊">
+                  <button class="home-conversation-row" data-chat-id="lab-group" data-chat-name="Wang lab(无导师版）" data-chat-status="群聊">
                     <div class="home-conversation-avatar convo-group-b">W</div>
                     <div class="home-conversation-main">
                       <div class="home-conversation-top">
@@ -321,7 +321,7 @@
                     </div>
                   </button>
 
-                  <button class="home-conversation-row" data-chat-name="实验仪器答疑群" data-chat-status="群聊">
+                  <button class="home-conversation-row" data-chat-id="instrument-group" data-chat-name="实验仪器答疑群" data-chat-status="群聊">
                     <div class="home-conversation-avatar convo-group-c">仪</div>
                     <div class="home-conversation-main">
                       <div class="home-conversation-top">
@@ -352,95 +352,13 @@
           </div>
         </div>
 
-        <div class="controller-panel">
-          <div class="controller-header">
-            <div>
-              <p class="panel-eyebrow">比赛演示链路</p>
-              <h2 id="scenario-title">高危消息安全伞</h2>
-            </div>
-            <button id="autoplay-button" class="ghost-button">自动路演</button>
-          </div>
-
-          <div class="scenario-grid">
-            <button class="scenario-card active" data-scenario="repair-message">
-              <span class="scenario-index">01</span>
-              <strong>沟通彩排</strong>
-              <p>把一段慌乱的大白话，变成能发给导师的成熟汇报。</p>
-            </button>
-            <button class="scenario-card" data-scenario="advisor-translate">
-              <span class="scenario-index">02</span>
-              <strong>导师意图翻译</strong>
-              <p>把“你看着办”拆成显性要求、潜在期待和下一步动作。</p>
-            </button>
-            <button class="scenario-card" data-scenario="lab-rag">
-              <span class="scenario-index">03</span>
-              <strong>课题组知识问答</strong>
-              <p>把群里的隐性知识，变成随时可问的 AI 大师兄。</p>
-            </button>
-            <button class="scenario-card" data-scenario="emotional-support">
-              <span class="scenario-index">04</span>
-              <strong>情绪树洞与转介</strong>
-              <p>不是泛泛安慰，而是基于授权上下文理解情绪来源。</p>
-            </button>
-          </div>
-        </div>
       </section>
-
-      <aside class="inspector">
-        <header class="inspector-header">
-          <p class="panel-eyebrow">AI 判断面板</p>
-          <h2>为什么这不是普通陪聊 AI</h2>
-        </header>
-
-        <section class="inspector-card">
-          <p class="card-title">场景识别</p>
-          <div class="pill-row" id="intent-pills"></div>
-        </section>
-
-        <section class="inspector-card">
-          <p class="card-title">上下文增强</p>
-          <div class="toggle-row">
-            <label class="toggle">
-              <input type="checkbox" id="toggle-history" checked />
-              <span>历史对话</span>
-            </label>
-            <label class="toggle">
-              <input type="checkbox" id="toggle-advisor" checked />
-              <span>导师摘要</span>
-            </label>
-            <label class="toggle">
-              <input type="checkbox" id="toggle-group" checked />
-              <span>群聊摘要</span>
-            </label>
-          </div>
-          <p class="panel-note">只在用户授权后使用，用来更准确理解压力来自哪里。</p>
-        </section>
-
-        <section class="inspector-card">
-          <p class="card-title">参考上下文</p>
-          <ul class="stack-list" id="context-list"></ul>
-        </section>
-
-        <section class="inspector-card">
-          <p class="card-title">压力与关系信号</p>
-          <div class="signal-grid" id="signal-grid"></div>
-        </section>
-
-        <section class="inspector-card">
-          <p class="card-title">系统输出</p>
-          <ul class="stack-list" id="output-list"></ul>
-        </section>
-
-        <section class="inspector-card">
-          <p class="card-title">风险等级</p>
-          <div class="risk-bar">
-            <div id="risk-fill" class="risk-fill risk-green"></div>
-          </div>
-          <p id="risk-label" class="risk-label">绿色：常规支持</p>
-        </section>
-      </aside>
+      <input type="checkbox" id="toggle-history" checked hidden />
+      <input type="checkbox" id="toggle-advisor" checked hidden />
+      <input type="checkbox" id="toggle-group" checked hidden />
     </div>
 
+    <script src="./chat-data.js"></script>
     <script src="./app.js"></script>
   </body>
 </html>
